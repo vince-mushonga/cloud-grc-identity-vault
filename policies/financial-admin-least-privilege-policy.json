@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowObjectLifecycleManagement",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:DeleteObject"
+      ],
+      "Resource": "arn:aws:s3:::grc-secure-financial-vault-2026/*"
+    },
+    {
+      "Sid": "AllowBucketConfigurationManagement",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetBucketVersioning",
+        "s3:PutBucketVersioning",
+        "s3:GetLifecycleConfiguration",
+        "s3:PutLifecycleConfiguration",
+        "s3:GetEncryptionConfiguration",
+        "s3:PutEncryptionConfiguration"
+      ],
+      "Resource": "arn:aws:s3:::grc-secure-financial-vault-2026"
+    },
+    {
+      "Sid": "DenyBucketPolicyAndAccessControlChanges",
+      "Effect": "Deny",
+      "Action": [
+        "s3:PutBucketPolicy",
+        "s3:DeleteBucketPolicy",
+        "s3:PutBucketAcl",
+        "s3:PutBucketPublicAccessBlock"
+      ],
+      "Resource": "arn:aws:s3:::grc-secure-financial-vault-2026"
+    },
+    {
+      "Sid": "RequireMFAForDelete",
+      "Effect": "Deny",
+      "Action": "s3:DeleteObject",
+      "Resource": "arn:aws:s3:::grc-secure-financial-vault-2026/*",
+      "Condition": {
+        "BoolIfExists": {
+          "aws:MultiFactorAuthPresent": "false"
+        }
+      }
+    }
+  ]
+}
